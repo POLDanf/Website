@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse all blog posts — tutorials, projects, and developer insights.">
+    <link rel="stylesheet" href="{% static 'blog/blog.css' %}">
+    <title>Blog — Aidan Young</title>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="container-flow">
+        <div class="header_row">
+            <div class="logo"></div>
+
+            <nav class="header_menu">
+                <ul class="header_menu_list">
+                    <li id="menu_item_1" class="menu_item" onclick="window.location.href='/'">
+                        Home
+                    </li>
+                    <li id="menu_item_2" class="menu_item" onclick="window.location.href='/projects/'">
+                        Projects
+                    </li>
+                    <li id="menu_item_3" class="menu_item menu_item--active" onclick="window.location.href='/blog/'">
+                        Blog
+                    </li>
+                    <li id="menu_item_4" class="menu_item" onclick="window.location.href='/#contact_id'">
+                        Contact
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="cta">
+                <div class="contact"></div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="blog-main">
+    <div class="blog-hero">
+        <h1 class="blog-hero-title">Blog</h1>
+        <p class="blog-hero-sub">Tutorials, project write-ups, and developer insights.</p>
+    </div>
+
+    <section class="blog-grid-section">
+        {% if posts %}
+        <div class="blog-grid">
+            {% for post in posts %}
+            <a class="blog-grid-card" href="/blog/{{ post.slug }}/" id="post-{{ post.id }}">
+                <div class="blog-grid-card-img">
+                    {% if post.cover_image %}
+                    <img src="{{ post.cover_image }}" alt="{{ post.title }}">
+                    {% else %}
+                    <div class="blog-grid-card-placeholder"></div>
+                    {% endif %}
+                </div>
+                <div class="blog-grid-card-body">
+                    {% if post.category %}
+                    <span class="blog-grid-card-tag">{{ post.category }}</span>
+                    {% endif %}
+                    <h2 class="blog-grid-card-title">{{ post.title }}</h2>
+                    <p class="blog-grid-card-excerpt">{{ post.excerpt }}</p>
+                    <div class="blog-grid-card-meta">
+                        <time datetime="{{ post.published|date:'Y-m-d' }}">{{ post.published|date:"F j, Y" }}</time>
+                        <span class="blog-grid-card-arrow">→</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="blog-empty-state">
+            <p>No posts yet — check back soon!</p>
+            <small>Add posts via the <a href="/admin/">Django admin panel</a>.</small>
+        </div>
+        {% endif %}
+    </section>
+</main>
+
+<footer class="blog-footer">
+    <p>© 2026 Aidan Young</p>
+</footer>
+
+<script src="{% static 'blog/blog.js' %}"></script>
+</body>
+</html>

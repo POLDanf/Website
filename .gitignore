@@ -1,0 +1,59 @@
+# ==========================================
+# Django & Python Core
+# ==========================================
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.cfg
+*.mo
+*.pot
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Django Media and Static files (handled in production via S3/CDN)
+/static/
+/media/
+staticfiles/
+
+# ==========================================
+# Databases & Backups (MySQL specific)
+# ==========================================
+*.sql
+*.sqlite3
+*.dump
+*.dump.gz
+
+# ==========================================
+# Operating System & IDEs
+# ==========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Ehthumbs.db
+Desktop.ini
+
+# JetBrains (PyCharm)
+.idea/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# ==========================================
+# Packages & Deployment
+# ==========================================
+pip-log.txt
+pip-delete-this-directory.txt
+.celery/

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'home/home.css' %}">
+    <title>My Blog</title>
+</head>
+
+<body>
+
+<header class="header">
+    <div class = "container-flow">
+        <div class="header_row">
+            <div class="logo">
+
+            </div>
+            
+            <nav class="header_menu">
+                <ul class = "header_menu_list">
+                    <li id="menu_item_1" class="menu_item" onclick="scrollToTop()">
+                        Home
+                    </li>
+                    <li id="menu_item_2" class="menu_item" onclick="scrollToId('projects_id')">
+                        Projects
+                    </li>
+                    <li id="menu_item_3" class="menu_item" onclick="scrollToId('blog_id')">
+                        Blog
+                    </li>
+                    <li id="menu_item_4" class="menu_item" onclick="scrollToId('contact_id')">
+                        Contact
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class = "cta">
+                <div class="contact">
+                    
+                </div>
+            </div>
+        </div>
+    </div>    
+</header>
+<canvas id="intro_canvas">
+
+</canvas>
+<div class="projects_container" id="projects_id">
+    <h1 class="project_heading section_heading_link" onclick="window.location.href='/projects/'">Projects <span class="heading_arrow">→</span></h1>
+    <div class = "project_flow">
+        <ul class = "project_list">
+            <div class = "project"></div>
+            <div class = "project"></div>
+            <div class = "project"></div>
+            <div class = "project"></div>
+            <div class = "project"></div>
+        </ul>
+    </div>
+</div>
+
+<div class="blog_container" id = "blog_id">
+    <h1 class="blog_heading section_heading_link" onclick="window.location.href='/blog/'">Blogs <span class="heading_arrow">→</span></h1>
+    <div class="blog_flow">
+        <div class="blog-ticker">
+            {% if blogs %}
+            {# Row 1 — scrolls left. Duplicate cards for seamless infinite scroll. #}
+            <div class="ticker-row left">
+                <div class="ticker-track">
+                    {% for post in blogs %}
+                    <a class="blog-card" href="/blog/{{ post.slug }}/">
+                        {% if post.cover_image %}
+                        <img src="{{ post.cover_image }}" alt="{{ post.title }}">
+                        {% else %}
+                        <div class="blog-card-placeholder"></div>
+                        {% endif %}
+                        <h3>{{ post.title }}</h3>
+                        <p>{{ post.excerpt }}</p>
+                        {% if post.category %}<span class="blog-card-tag">{{ post.category }}</span>{% endif %}
+                    </a>
+                    {% endfor %}
+                    {# Duplicate for seamless loop #}
+                    {% for post in blogs %}
+                    <a class="blog-card" href="/blog/{{ post.slug }}/" aria-hidden="true">
+                        {% if post.cover_image %}
+                        <img src="{{ post.cover_image }}" alt="{{ post.title }}">
+                        {% else %}
+                        <div class="blog-card-placeholder"></div>
+                        {% endif %}
+                        <h3>{{ post.title }}</h3>
+                        <p>{{ post.excerpt }}</p>
+                        {% if post.category %}<span class="blog-card-tag">{{ post.category }}</span>{% endif %}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {# Row 2 — scrolls right #}
+            <div class="ticker-row right">
+                <div class="ticker-track">
+                    {% for post in blogs %}
+                    <a class="blog-card" href="/blog/{{ post.slug }}/">
+                        {% if post.cover_image %}
+                        <img src="{{ post.cover_image }}" alt="{{ post.title }}">
+                        {% else %}
+                        <div class="blog-card-placeholder"></div>
+                        {% endif %}
+                        <h3>{{ post.title }}</h3>
+                        <p>{{ post.excerpt }}</p>
+                        {% if post.category %}<span class="blog-card-tag">{{ post.category }}</span>{% endif %}
+                    </a>
+                    {% endfor %}
+                    {# Duplicate for seamless loop #}
+                    {% for post in blogs %}
+                    <a class="blog-card" href="/blog/{{ post.slug }}/" aria-hidden="true">
+                        {% if post.cover_image %}
+                        <img src="{{ post.cover_image }}" alt="{{ post.title }}">
+                        {% else %}
+                        <div class="blog-card-placeholder"></div>
+                        {% endif %}
+                        <h3>{{ post.title }}</h3>
+                        <p>{{ post.excerpt }}</p>
+                        {% if post.category %}<span class="blog-card-tag">{{ post.category }}</span>{% endif %}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% else %}
+            <p class="blog-empty">No blog posts yet. Add some in the <a href="/admin/">admin panel</a>.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="contact_container" id="contact_id">
+
+    <div class="contact-header">
+        <h2>Get In Touch</h2>
+        <p>Have a question or project in mind? Send me a message.</p>
+    </div>
+
+    <form id="contactForm" class="contact-form">
+
+        <div class="form-group">
+            <input
+                type="text"
+                id="name"
+                placeholder="Your Name"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <input
+                type="email"
+                id="email"
+                placeholder="Your Email"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <input
+                type="text"
+                id="subject"
+                placeholder="Subject"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <textarea
+                id="message"
+                rows="6"
+                placeholder="Your Message"
+                required
+            ></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">
+            Send Message
+        </button>
+
+        <div id="formStatus"></div>
+
+    </form>
+
+</div>
+
+<footer>
+    <p>© 2026 Aidan Young</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/RGBELoader.js"></script>
+<script src="{% static 'home/home.js' %}"></script>
+</body>
+</html>

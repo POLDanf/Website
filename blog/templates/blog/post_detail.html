@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ post.excerpt }}">
+    <link rel="stylesheet" href="{% static 'blog/blog.css' %}">
+    <title>{{ post.title }} — Aidan Young</title>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="container-flow">
+        <div class="header_row">
+            <div class="logo"></div>
+
+            <nav class="header_menu">
+                <ul class="header_menu_list">
+                    <li id="menu_item_1" class="menu_item" onclick="window.location.href='/'">Home</li>
+                    <li id="menu_item_2" class="menu_item" onclick="window.location.href='/projects/'">Projects</li>
+                    <li id="menu_item_3" class="menu_item menu_item--active" onclick="window.location.href='/blog/'">Blog</li>
+                    <li id="menu_item_4" class="menu_item" onclick="window.location.href='/#contact_id'">Contact</li>
+                </ul>
+            </nav>
+
+            <div class="cta"><div class="contact"></div></div>
+        </div>
+    </div>
+</header>
+
+<main class="post-main">
+    <article class="post-article">
+
+        {% if post.cover_image %}
+        <div class="post-hero-img">
+            <img src="{{ post.cover_image }}" alt="{{ post.title }}">
+        </div>
+        {% endif %}
+
+        <div class="post-meta">
+            {% if post.category %}<span class="blog-grid-card-tag">{{ post.category }}</span>{% endif %}
+            <time datetime="{{ post.published|date:'Y-m-d' }}">{{ post.published|date:"F j, Y" }}</time>
+        </div>
+
+        <h1 class="post-title">{{ post.title }}</h1>
+        <p class="post-excerpt">{{ post.excerpt }}</p>
+
+        <div class="post-content">
+            {{ post.content|linebreaks }}
+        </div>
+
+        <a href="/blog/" class="post-back">← Back to Blog</a>
+
+    </article>
+</main>
+
+<footer class="blog-footer">
+    <p>© 2026 Aidan Young</p>
+</footer>
+
+<script src="{% static 'blog/blog.js' %}"></script>
+</body>
+</html>

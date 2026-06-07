@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'projects/projects.css' %}">
+    <title>My Projects</title>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="container-flow">
+        <div class="header_row">
+            <div class="logo"></div>
+
+            <nav class="header_menu">
+                <ul class="header_menu_list">
+                    <li id="menu_item_1" class="menu_item" onclick="window.location.href='/'">
+                        Home
+                    </li>
+                    <li id="menu_item_2" class="menu_item menu_item--active" onclick="window.location.href='/projects/'">
+                        Projects
+                    </li>
+                    <li id="menu_item_3" class="menu_item" onclick="window.location.href='/blog/'">
+                        Blog
+                    </li>
+                    <li id="menu_item_4" class="menu_item" onclick="window.location.href='/#contact_id'">
+                        Contact
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="cta">
+                <div class="contact"></div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script type="module" src="{% static 'projects/projects.js' %}"></script>
+</body>
+</html>
