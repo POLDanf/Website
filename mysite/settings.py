@@ -79,20 +79,20 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-#DATABASES = {
-#    'default': env.db('DATABASE_URL')
-#}
-#DATABASES['default']['CONN_MAX_AGE'] = 60
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "mydb",
-        "USER": "root",
-        "PASSWORD": "root",
-        "HOST": "127.0.0.1",
-        "PORT": "3306",
-    }
+    'default': env.db('DATABASE_URL')
 }
+DATABASES['default']['CONN_MAX_AGE'] = 60
+#DATABASES = {
+#    "default": {
+#        "ENGINE": "django.db.backends.mysql",
+#        "NAME": "mydb",
+#        "USER": "root",
+#        "PASSWORD": "root",
+#        "HOST": "127.0.0.1",
+#        "PORT": "3306",
+#    }
+#}
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
