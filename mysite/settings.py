@@ -10,22 +10,26 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import collections
 from pathlib import Path
+import os
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-z+*i&j!@33(x+=#j5p7n#realwqn-gcvss426!=-pqf%^f+mr&"
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = env('SECRET_KEY')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['127.0.0.1', 'localhost', 'localhost:8000'])
 
 
 # Application definition
@@ -76,16 +80,9 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "mydb",
-        "USER": "root",
-        "PASSWORD": "root",
-        "HOST": "127.0.0.1",
-        "PORT": "3306",
-    }
+    'default': env.db('DATABASE_URL')
 }
-
+DATABASES['default']['CONN_MAX_AGE'] = 60
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -122,3 +119,25 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    # BASE_DIR / "static", # Uncomment this only if you create a global static folder later
+]
+DEBUG  = env('DEBUG')
+
+# Only activate these if traffic is secured via SSL (HTTPS)
+if not DEBUG:
+    # Force all HTTP traffic to redirect to HTTPS
+    SECURE_SSL_REDIRECT = True
+    
+    # Protect cookies from being sent over insecure HTTP connections
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    
+    # Enable HTTP Strict Transport Security (HSTS)
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    
+    # Browser defense headers
+    SECURE_CONTENT_TYPE_NOSNIFF = True
