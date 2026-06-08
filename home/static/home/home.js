@@ -36,6 +36,50 @@ form.addEventListener("submit", function (e) {
 
   setStatus("Message ready to send.");
   console.log(values);
+  form.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const values = getFieldValues();
+  const missing = FIELDS.filter(key => !values[key]);
+
+  if (missing.length) {
+    setStatus("Please complete all fields.", true);
+    return;
+  }
+
+  if (!isValidEmail(values.email)) {
+    setStatus("Please enter a valid email address.", true);
+    return;
+  }
+
+  setStatus("Sending message...");
+
+  // --- CONNECTING TO DJANGO backend ---
+  // We extract the Django CSRF token cookie dynamically
+  const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+  fetch("/contact/submit/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken // Required by Django for security
+    },
+    body: JSON.stringify(values)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      setStatus("Message sent successfully!");
+      form.reset();
+    } else {
+      setStatus("Error sending message: " + data.error, true);
+    }
+  })
+  .catch(error => {
+    console.error("Error:", error);
+    setStatus("Server error. Please try again later.", true);
+  });
+});
   form.reset();
 });
 

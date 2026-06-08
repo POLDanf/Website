@@ -151,3 +151,13 @@ if not DEBUG:
     
     # Browser defense headers
     SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Core Django Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# Use django-environ to keep your credentials secret in production!
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'aidanyoung052@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
