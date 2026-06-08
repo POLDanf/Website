@@ -34,35 +34,18 @@ form.addEventListener("submit", function (e) {
     return;
   }
 
-  setStatus("Message ready to send.");
-  console.log(values);
-  form.addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  const values = getFieldValues();
-  const missing = FIELDS.filter(key => !values[key]);
-
-  if (missing.length) {
-    setStatus("Please complete all fields.", true);
-    return;
-  }
-
-  if (!isValidEmail(values.email)) {
-    setStatus("Please enter a valid email address.", true);
-    return;
-  }
-
+  // 1. Instantly set status to let the user know it's working
   setStatus("Sending message...");
 
-  // --- CONNECTING TO DJANGO backend ---
-  // We extract the Django CSRF token cookie dynamically
+  // 2. Safely capture the token rendered by {% csrf_token %}
   const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
+  // 3. Fire the request over the network to your Django route
   fetch("/contact/submit/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRFToken": csrfToken // Required by Django for security
+      "X-CSRFToken": csrfToken 
     },
     body: JSON.stringify(values)
   })
@@ -70,7 +53,7 @@ form.addEventListener("submit", function (e) {
   .then(data => {
     if (data.success) {
       setStatus("Message sent successfully!");
-      form.reset();
+      form.reset(); // Only clear inputs on a verified 200 OK from Django
     } else {
       setStatus("Error sending message: " + data.error, true);
     }
@@ -79,8 +62,6 @@ form.addEventListener("submit", function (e) {
     console.error("Error:", error);
     setStatus("Server error. Please try again later.", true);
   });
-});
-  form.reset();
 });
 
 
